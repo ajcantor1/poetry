@@ -90,9 +90,8 @@ class EditableBuilder(Builder):
     def _setup_build(self) -> None:
         builder = SdistBuilder(self._poetry)
         setup = self._path / "setup.py"
-        has_setup = setup.exists()
 
-        if has_setup:
+        if has_setup := setup.exists():
             self._io.write_error_line(
                 "<warning>A setup.py file already exists. Using it.</warning>"
             )

@@ -207,8 +207,7 @@ class RepositoryPool(AbstractRepository):
         raise PackageNotFound(f"Package {name} ({version}) not found.")
 
     def find_packages(self, dependency: Dependency) -> list[Package]:
-        repository_name = dependency.source_name
-        if repository_name:
+        if repository_name := dependency.source_name:
             return self.repository(repository_name).find_packages(dependency)
 
         packages: list[Package] = []

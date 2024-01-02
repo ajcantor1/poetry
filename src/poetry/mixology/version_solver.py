@@ -71,8 +71,7 @@ class DependencyCache:
         dependency: Dependency,
         key: DependencyCacheKey,
     ) -> list[DependencyPackage]:
-        cache_entries = self._cache[key]
-        if cache_entries:
+        if cache_entries := self._cache[key]:
             packages = [
                 p
                 for p in cache_entries[-1]
@@ -189,9 +188,8 @@ class VersionSolver:
                 if incompatibility in self._contradicted_incompatibilities:
                     continue
 
-                result = self._propagate_incompatibility(incompatibility)
 
-                if result is _conflict:
+                if (result := self._propagate_incompatibility(incompatibility)) is _conflict:
                     # If the incompatibility is satisfied by the solution, we use
                     # _resolve_conflict() to determine the root cause of the conflict as
                     # a new incompatibility.
@@ -229,9 +227,8 @@ class VersionSolver:
         unsatisfied = None
 
         for term in incompatibility.terms:
-            relation = self._solution.relation(term)
 
-            if relation == SetRelation.DISJOINT:
+            if (relation := self._solution.relation(term)) == SetRelation.DISJOINT:
                 # If term is already contradicted by _solution, then
                 # incompatibility is contradicted as well and there's nothing new we
                 # can deduce from it.
@@ -481,14 +478,12 @@ class VersionSolver:
 
         dependency = min(unsatisfied, key=_get_min)
 
-        locked = self._provider.get_locked(dependency)
-        if locked is None:
+        if (locked := self._provider.get_locked(dependency)) is None:
             packages = self._dependency_cache.search_for(
                 dependency, self._solution.decision_level
             )
-            package = next(iter(packages), None)
 
-            if package is None:
+            if (package := next(iter(packages), None)) is None:
                 # If there are no versions that satisfy the constraint,
                 # add an incompatibility that indicates that.
                 self._add_incompatibility(

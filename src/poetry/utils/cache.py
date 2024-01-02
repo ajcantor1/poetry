@@ -141,8 +141,7 @@ class FileCache(Generic[T]):
         :param callback: Callback function providing default value
         :param minutes: The lifetime in minutes of the cached value
         """
-        value = self.get(key)
-        if value is None:
+        if (value := self.get(key)) is None:
             value = callback() if callable(callback) else callback
             self.put(key, value, minutes)
         return value

@@ -237,8 +237,7 @@ class Provider:
         return packages
 
     def search_for_direct_origin_dependency(self, dependency: Dependency) -> Package:
-        package = self._deferred_cache.get(dependency)
-        if package is not None:
+        if (package := self._deferred_cache.get(dependency)) is not None:
             pass
 
         elif dependency.is_vcs():

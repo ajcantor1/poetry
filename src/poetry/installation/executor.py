@@ -756,12 +756,11 @@ class Executor:
 
         # Get potential higher prioritized cached archive, otherwise it will fall back
         # to the original archive.
-        archive = self._artifact_cache.get_cached_archive_for_link(
+        if (archive := self._artifact_cache.get_cached_archive_for_link(
             link,
             strict=False,
             env=self._env,
-        )
-        if archive is None:
+        )) is None:
             # Since we previously downloaded an archive, we now should have
             # something cached that we can use here. The only case in which
             # archive is None is if the original archive is not valid for the

@@ -147,9 +147,8 @@ dependencies and not including the current project, run the command with the
         self.installer.executor.enable_bytecode_compilation(self.option("compile"))
         self.installer.verbose(self.io.is_verbose())
 
-        return_code = self.installer.run()
 
-        if return_code != 0:
+        if (return_code := self.installer.run()) != 0:
             return return_code
 
         if self.option("no-root"):

@@ -255,8 +255,8 @@ class InstalledRepository(Repository):
                 if path in skipped:
                     continue
 
-                name = distribution.metadata.get("name")  # type: ignore[attr-defined]
-                if name is None:
+# type: ignore[attr-defined]
+                if (name := distribution.metadata.get("name")) is None:
                     logger.warning(
                         "Project environment contains an invalid distribution"
                         " (<c1>%s</>). Consider removing it manually or recreate"

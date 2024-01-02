@@ -99,8 +99,7 @@ class HTTPRepository(CachedRepository):
 
     def _get_info_from_urls(self, urls: dict[str, list[str]]) -> PackageInfo:
         # Prefer to read data from wheels: this is faster and more reliable
-        wheels = urls.get("bdist_wheel")
-        if wheels:
+        if wheels := urls.get("bdist_wheel"):
             # We ought just to be able to look at any of the available wheels to read
             # metadata, they all should give the same answer.
             #

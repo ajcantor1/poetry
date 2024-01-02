@@ -21,8 +21,7 @@ class IOHandler(logging.Handler):
         try:
             msg = self.format(record)
             level = record.levelname.lower()
-            err = level in ("warning", "error", "exception", "critical")
-            if err:
+            if err := level in ("warning", "error", "exception", "critical"):
                 self._io.write_error_line(msg)
             else:
                 self._io.write_line(msg)

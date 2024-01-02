@@ -61,8 +61,7 @@ class EnvManager:
     @staticmethod
     def _full_python_path(python: str) -> Path | None:
         # eg first find pythonXY.bat on windows.
-        path_python = shutil.which(python)
-        if path_python is None:
+        if (path_python := shutil.which(python)) is None:
             return None
 
         try:
@@ -83,9 +82,8 @@ class EnvManager:
             verbosity=Verbosity.VERBOSE,
         )
 
-        executable = EnvManager._full_python_path("python")
 
-        if executable is not None:
+        if (executable := EnvManager._full_python_path("python")) is not None:
             io.write_error_line(f"Found: {executable}", verbosity=Verbosity.VERBOSE)
         else:
             io.write_error_line(
@@ -136,8 +134,7 @@ class EnvManager:
             # Executable in PATH or full executable path
             pass
 
-        python_path = self._full_python_path(python)
-        if python_path is None:
+        if (python_path := self._full_python_path(python)) is None:
             raise PythonVersionNotFound(python)
 
         try:
@@ -737,12 +734,10 @@ class EnvManager:
 
     @classmethod
     def get_base_prefix(cls) -> Path:
-        real_prefix = getattr(sys, "real_prefix", None)
-        if real_prefix is not None:
+        if (real_prefix := getattr(sys, "real_prefix", None)) is not None:
             return Path(real_prefix)
 
-        base_prefix = getattr(sys, "base_prefix", None)
-        if base_prefix is not None:
+        if (base_prefix := getattr(sys, "base_prefix", None)) is not None:
             return Path(base_prefix)
 
         return Path(sys.prefix)

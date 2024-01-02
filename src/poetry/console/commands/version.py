@@ -59,9 +59,8 @@ patch, minor, major, prepatch, preminor, premajor, prerelease.
     }
 
     def handle(self) -> int:
-        version = self.argument("version")
 
-        if version:
+        if version := self.argument("version"):
             version = self.increment_version(
                 self.poetry.package.pretty_version, version, self.option("next-phase")
             )

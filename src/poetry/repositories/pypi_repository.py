@@ -105,15 +105,13 @@ class PyPiRepository(HTTPRepository):
 
     def _get_package_info(self, name: NormalizedName) -> dict[str, Any]:
         headers = {"Accept": "application/vnd.pypi.simple.v1+json"}
-        info = self._get(f"simple/{name}/", headers=headers)
-        if info is None:
+        if (info := self._get(f"simple/{name}/", headers=headers)) is None:
             raise PackageNotFound(f"Package [{name}] not found.")
 
         return info
 
     def find_links_for_package(self, package: Package) -> list[Link]:
-        json_data = self._get(f"pypi/{package.name}/{package.version}/json")
-        if json_data is None:
+        if (json_data := self._get(f"pypi/{package.name}/{package.version}/json")) is None:
             return []
 
         links = []
@@ -131,8 +129,7 @@ class PyPiRepository(HTTPRepository):
 
         self._log(f"Getting info for {name} ({version}) from PyPI", "debug")
 
-        json_data = self._get(f"pypi/{name}/{version}/json")
-        if json_data is None:
+        if (json_data := self._get(f"pypi/{name}/{version}/json")) is None:
             raise PackageNotFound(f"Package [{name}] not found.")
 
         info = json_data["info"]

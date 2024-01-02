@@ -256,8 +256,7 @@ You can specify a package in the following forms:
     ) -> list[str]:
         choices = []
         matches_names = [p.name for p in matches]
-        exact_match = canonicalized_name in matches_names
-        if exact_match:
+        if exact_match := canonicalized_name in matches_names:
             choices.append(matches[matches_names.index(canonicalized_name)].pretty_name)
 
         for found_package in matches:

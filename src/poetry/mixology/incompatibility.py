@@ -212,16 +212,13 @@ class Incompatibility:
         this_line: int | None,
         other_line: int | None,
     ) -> str:
-        requires_both = self._try_requires_both(other, this_line, other_line)
-        if requires_both is not None:
+        if (requires_both := self._try_requires_both(other, this_line, other_line)) is not None:
             return requires_both
 
-        requires_through = self._try_requires_through(other, this_line, other_line)
-        if requires_through is not None:
+        if (requires_through := self._try_requires_through(other, this_line, other_line)) is not None:
             return requires_through
 
-        requires_forbidden = self._try_requires_forbidden(other, this_line, other_line)
-        if requires_forbidden is not None:
+        if (requires_forbidden := self._try_requires_forbidden(other, this_line, other_line)) is not None:
             return requires_forbidden
 
         buffer = [str(self)]
@@ -244,12 +241,10 @@ class Incompatibility:
         if len(self._terms) == 1 or len(other.terms) == 1:
             return None
 
-        this_positive = self._single_term_where(lambda term: term.is_positive())
-        if this_positive is None:
+        if (this_positive := self._single_term_where(lambda term: term.is_positive())) is None:
             return None
 
-        other_positive = other._single_term_where(lambda term: term.is_positive())
-        if other_positive is None:
+        if (other_positive := other._single_term_where(lambda term: term.is_positive())) is None:
             return None
 
         if this_positive.dependency != other_positive.dependency:
@@ -264,11 +259,10 @@ class Incompatibility:
         ])
 
         buffer = [self._terse(this_positive, allow_every=True) + " "]
-        is_dependency = isinstance(self.cause, DependencyCause) and isinstance(
-            other.cause, DependencyCause
-        )
 
-        if is_dependency:
+        if is_dependency := isinstance(self.cause, DependencyCause) and isinstance(
+            other.cause, DependencyCause
+        ):
             buffer.append("depends on")
         else:
             buffer.append("requires")
@@ -385,8 +379,7 @@ class Incompatibility:
             prior_line = this_line
             latter_line = other_line
 
-        negative = prior._single_term_where(lambda term: not term.is_positive())
-        if negative is None:
+        if (negative := prior._single_term_where(lambda term: not term.is_positive())) is None:
             return None
 
         if not negative.inverse.satisfies(latter.terms[0]):

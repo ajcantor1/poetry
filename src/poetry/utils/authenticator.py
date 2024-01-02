@@ -440,8 +440,7 @@ class Authenticator:
         return candidates[0]
 
     def _get_certs_for_url(self, url: str) -> RepositoryCertificateConfig:
-        selected = self.get_repository_config_for_url(url)
-        if selected:
+        if selected := self.get_repository_config_for_url(url):
             return selected.certs(config=self._config)
         return RepositoryCertificateConfig()
 

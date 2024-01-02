@@ -74,24 +74,21 @@ class RequirementsParser:
     def parse(self, requirement: str) -> DependencySpec:
         requirement = requirement.strip()
 
-        specification = self._parse_pep508(requirement)
 
-        if specification is not None:
+        if (specification := self._parse_pep508(requirement)) is not None:
             return specification
 
         extras = []
-        extras_m = re.search(r"\[([\w\d,-_ ]+)\]$", requirement)
-        if extras_m:
+        if extras_m := re.search(r"\[([\w\d,-_ ]+)\]$", requirement):
             extras = [e.strip() for e in extras_m.group(1).split(",")]
             requirement, _ = requirement.split("[")
 
-        specification = (
+
+        if specification := (
             self._parse_url(requirement)
             or self._parse_path(requirement)
             or self._parse_simple(requirement)
-        )
-
-        if specification:
+        ):
             if extras and "extras" not in specification:
                 specification["extras"] = extras
             return specification
@@ -106,9 +103,8 @@ class RequirementsParser:
         with contextlib.suppress(ValueError):
             dependency = Dependency.create_from_pep_508(requirement)
             specification: DependencySpec = {}
-            specification = dependency_to_specification(dependency, specification)
 
-            if specification:
+            if specification := dependency_to_specification(dependency, specification):
                 specification["name"] = dependency.name
                 return specification
 

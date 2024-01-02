@@ -131,8 +131,7 @@ class Layout:
             poetry_content.remove("license")
 
         poetry_content["readme"] = f"README.{self._readme_format}"
-        packages = self.get_package_include()
-        if packages:
+        if packages := self.get_package_include():
             poetry_content["packages"].append(packages)
         else:
             poetry_content.remove("packages")

@@ -232,8 +232,7 @@ class PasswordManager:
         if not auth:
             return
 
-        username = auth.get("username")
-        if username is None:
+        if (username := auth.get("username")) is None:
             return
 
         with suppress(PoetryKeyringError):

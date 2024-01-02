@@ -108,12 +108,11 @@ class Env:
         if self._is_windows and self._is_conda:
             bin_dir = self._path
 
-        python_executables = sorted(
+        if python_executables := sorted(
             p.name
             for p in bin_dir.glob("python*")
             if re.match(r"python(?:\d+(?:\.\d+)?)?(?:\.exe)?$", p.name)
-        )
-        if python_executables:
+        ):
             executable = python_executables[0]
             if executable.endswith(".exe"):
                 executable = executable[:-4]
@@ -121,12 +120,11 @@ class Env:
             self._executable = executable
 
     def _find_pip_executable(self) -> None:
-        pip_executables = sorted(
+        if pip_executables := sorted(
             p.name
             for p in self._bin_dir.glob("pip*")
             if re.match(r"pip(?:\d+(?:\.\d+)?)?(?:\.exe)?$", p.name)
-        )
-        if pip_executables:
+        ):
             pip_executable = pip_executables[0]
             if pip_executable.endswith(".exe"):
                 pip_executable = pip_executable[:-4]
@@ -260,12 +258,10 @@ class Env:
 
     @classmethod
     def get_base_prefix(cls) -> Path:
-        real_prefix = getattr(sys, "real_prefix", None)
-        if real_prefix is not None:
+        if (real_prefix := getattr(sys, "real_prefix", None)) is not None:
             return Path(real_prefix)
 
-        base_prefix = getattr(sys, "base_prefix", None)
-        if base_prefix is not None:
+        if (base_prefix := getattr(sys, "base_prefix", None)) is not None:
             return Path(base_prefix)
 
         return Path(sys.prefix)

@@ -147,8 +147,7 @@ class Locker:
             # - oldest is that hashes were stored in metadata.hashes without filenames
             # - in between those two, hashes were stored alongside filenames in
             #   metadata.files
-            package_files = info.get("files")
-            if package_files is not None:
+            if (package_files := info.get("files")) is not None:
                 package.files = package_files
             elif "hashes" in metadata:
                 hashes = cast("dict[str, Any]", metadata["hashes"])
@@ -167,8 +166,7 @@ class Locker:
                     package.files = files
 
             package.python_versions = info["python-versions"]
-            extras = info.get("extras", {})
-            if extras:
+            if extras := info.get("extras", {}):
                 for name, deps in extras.items():
                     name = canonicalize_name(name)
                     package.extras[name] = []

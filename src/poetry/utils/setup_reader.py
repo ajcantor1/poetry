@@ -55,8 +55,7 @@ class SetupReader:
 
         body = ast.parse(content).body
 
-        setup_call = self._find_setup_call(body)
-        if setup_call is None:
+        if (setup_call := self._find_setup_call(body)) is None:
             return self.DEFAULT
 
         # Inspecting keyword arguments
@@ -181,8 +180,7 @@ class SetupReader:
             if not isinstance(element, (ast.FunctionDef, ast.If)):
                 continue
 
-            setup_call = self._find_setup_call(element.body)
-            if setup_call is not None:
+            if (setup_call := self._find_setup_call(element.body)) is not None:
                 sub_call, body = setup_call
 
                 body = elements + body
@@ -193,8 +191,7 @@ class SetupReader:
 
     def _find_install_requires(self, call: ast.Call, body: list[ast.stmt]) -> list[str]:
         install_requires: list[str] = []
-        value = self._find_in_call(call, "install_requires")
-        if value is None:
+        if (value := self._find_in_call(call, "install_requires")) is None:
             # Trying to find in kwargs
             kwargs = self._find_call_kwargs(call)
 
@@ -237,8 +234,7 @@ class SetupReader:
         self, call: ast.Call, body: list[ast.stmt]
     ) -> dict[str, list[str]]:
         extras_require: dict[str, list[str]] = {}
-        value = self._find_in_call(call, "extras_require")
-        if value is None:
+        if (value := self._find_in_call(call, "extras_require")) is None:
             # Trying to find in kwargs
             kwargs = self._find_call_kwargs(call)
 
@@ -303,8 +299,7 @@ class SetupReader:
     def _find_single_string(
         self, call: ast.Call, body: list[ast.stmt], name: str
     ) -> str | None:
-        value = self._find_in_call(call, name)
-        if value is None:
+        if (value := self._find_in_call(call, name)) is None:
             # Trying to find in kwargs
             kwargs = self._find_call_kwargs(call)
 

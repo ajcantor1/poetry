@@ -201,8 +201,7 @@ class Config:
         pattern = re.compile(r"POETRY_REPOSITORIES_(?P<name>[A-Z_]+)_URL")
 
         for env_key in os.environ:
-            match = pattern.match(env_key)
-            if match:
+            if match := pattern.match(env_key):
                 repositories[match.group("name").lower().replace("_", "-")] = {
                     "url": os.environ[env_key]
                 }
@@ -219,8 +218,7 @@ class Config:
 
     @property
     def virtualenvs_path(self) -> Path:
-        path = self.get("virtualenvs.path")
-        if path is None:
+        if (path := self.get("virtualenvs.path")) is None:
             path = Path(self.get("cache-dir")) / "virtualenvs"
         return Path(path).expanduser()
 
@@ -235,8 +233,7 @@ class Config:
         except NotImplementedError:
             default_max_workers = 5
 
-        desired_max_workers = self.get("installer.max-workers")
-        if desired_max_workers is None:
+        if (desired_max_workers := self.get("installer.max-workers")) is None:
             return default_max_workers
         return min(default_max_workers, int(desired_max_workers))
 
@@ -275,8 +272,7 @@ class Config:
 
         def resolve_from_config(match: re.Match[str]) -> Any:
             key = match.group(1)
-            config_value = self.get(key)
-            if config_value:
+            if config_value := self.get(key):
                 return config_value
 
             # The key doesn't exist in the config but might be resolved later,

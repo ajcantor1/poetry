@@ -342,8 +342,7 @@ class PackageInfo:
         except Exception as e:
             raise PackageInfoError(path, e)
 
-        python_requires = result["python_requires"]
-        if python_requires is None:
+        if (python_requires := result["python_requires"]) is None:
             python_requires = "*"
 
         requires = "".join(dep + "\n" for dep in result["install_requires"])

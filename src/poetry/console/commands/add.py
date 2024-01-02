@@ -146,9 +146,8 @@ The add command adds required packages to your <comment>pyproject.toml</> and in
 
             section = poetry_content["group"][group]["dependencies"]
 
-        existing_packages = self.get_existing_packages_from_input(packages, section)
 
-        if existing_packages:
+        if existing_packages := self.get_existing_packages_from_input(packages, section):
             self.notify_about_existing_packages(existing_packages)
 
         packages = [name for name in packages if name not in existing_packages]
@@ -164,8 +163,7 @@ The add command adds required packages to your <comment>pyproject.toml</> and in
         )
 
         for _constraint in requirements:
-            version = _constraint.get("version")
-            if version is not None:
+            if (version := _constraint.get("version")) is not None:
                 # Validate version constraint
                 assert isinstance(version, str)
                 parse_constraint(version)
@@ -218,9 +216,8 @@ The add command adds required packages to your <comment>pyproject.toml</> and in
             constraint_name = _constraint["name"]
             assert isinstance(constraint_name, str)
 
-            canonical_constraint_name = canonicalize_name(constraint_name)
 
-            if canonical_constraint_name == project_name:
+            if (canonical_constraint_name := canonicalize_name(constraint_name)) == project_name:
                 self.line_error(
                     f"<error>Cannot add dependency on <c1>{constraint_name}</c1> to"
                     " project with the same name."

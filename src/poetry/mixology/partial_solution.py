@@ -145,8 +145,7 @@ class PartialSolution:
         Registers an Assignment in _positive or _negative.
         """
         name = assignment.dependency.complete_name
-        old_positive = self._positive.get(name)
-        if old_positive is not None:
+        if (old_positive := self._positive.get(name)) is not None:
             value = old_positive.intersect(assignment)
             assert value is not None
             self._positive[name] = value
@@ -204,12 +203,10 @@ class PartialSolution:
         return self.relation(term) == SetRelation.SUBSET
 
     def relation(self, term: Term) -> str:
-        positive = self._positive.get(term.dependency.complete_name)
-        if positive is not None:
+        if (positive := self._positive.get(term.dependency.complete_name)) is not None:
             return positive.relation(term)
 
-        negative = self._negative.get(term.dependency.complete_name)
-        if negative is None:
+        if (negative := self._negative.get(term.dependency.complete_name)) is None:
             return SetRelation.OVERLAPPING
 
         return negative.relation(term)

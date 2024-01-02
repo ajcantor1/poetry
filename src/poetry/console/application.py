@@ -197,8 +197,7 @@ class Application(BaseApplication):
         with suppress(CleoError):
             io.input.bind(definition)
 
-        name = io.input.first_argument
-        if name == "run":
+        if (name := io.input.first_argument) == "run":
             from poetry.console.io.inputs.run_argv_input import RunArgvInput
 
             input = cast("ArgvInput", io.input)

@@ -84,8 +84,7 @@ class _Writer:
 
             last_was_empty = False
 
-            number = line[-1]
-            if number is not None:
+            if (number := line[-1]) is not None:
                 message = f"({number})".ljust(padding) + message
             else:
                 message = " " * padding + message

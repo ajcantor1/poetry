@@ -78,8 +78,7 @@ class Uploader:
 
     def make_session(self) -> requests.Session:
         session = requests.Session()
-        auth = self.get_auth()
-        if auth is not None:
+        if (auth := self.get_auth()) is not None:
             session.auth = auth
 
         session.headers["User-Agent"] = self.user_agent

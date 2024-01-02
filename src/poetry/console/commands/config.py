@@ -169,8 +169,7 @@ To remove a repository (repo is a short alias for repositories):
             )
 
         # handle repositories
-        m = re.match(r"^repos?(?:itories)?(?:\.(.+))?", self.argument("key"))
-        if m:
+        if m := re.match(r"^repos?(?:itories)?(?:\.(.+))?", self.argument("key")):
             if not m.group(1):
                 raise ValueError("You cannot remove the [repositories] section")
 
@@ -196,8 +195,7 @@ To remove a repository (repo is a short alias for repositories):
             )
 
         # handle auth
-        m = re.match(r"^(http-basic|pypi-token)\.(.+)", self.argument("key"))
-        if m:
+        if m := re.match(r"^(http-basic|pypi-token)\.(.+)", self.argument("key")):
             from poetry.utils.password_manager import PasswordManager
 
             password_manager = PasswordManager(config)
@@ -238,8 +236,7 @@ To remove a repository (repo is a short alias for repositories):
             return 0
 
         # handle certs
-        m = re.match(r"certificates\.([^.]+)\.(cert|client-cert)", self.argument("key"))
-        if m:
+        if m := re.match(r"certificates\.([^.]+)\.(cert|client-cert)", self.argument("key")):
             repository = m.group(1)
             key = m.group(2)
 
