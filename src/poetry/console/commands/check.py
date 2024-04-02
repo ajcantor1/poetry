@@ -113,8 +113,7 @@ class CheckCommand(Command):
             check_result["errors"] += ["poetry.lock was not found."]
         if self.poetry.locker.is_locked() and not self.poetry.locker.is_fresh():
             check_result["errors"] += [
-                "poetry.lock is not consistent with pyproject.toml. Run `poetry"
-                " lock [--no-update]` to fix it."
+                "poetry.lock is not consistent with pyproject.toml. Run `poetry", " lock [--no-update]` to fix it."
             ]
 
         if not check_result["errors"] and not check_result["warnings"]:
